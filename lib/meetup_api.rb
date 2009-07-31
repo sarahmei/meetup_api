@@ -7,10 +7,15 @@ module MeetupApi
   API_BASE_URL = "http://api#{DEV}.meetup.com/"
   EVENTS_URI = 'events'
   RSVPS_URI = 'rsvps'
+  MEMBERS_URI = 'members'
   
   class Client
     def initialize(apiKey)
       @key = apiKey
+    end
+    
+    def get_members(args)
+      ApiResponse.new(fetch(MEMBERS_URI, args), Member)
     end
     
     def get_events(args)
@@ -82,6 +87,12 @@ module MeetupApi
   class Rsvp < ApiItem
     def to_s
       "Rsvp by #{self.name} (#{self.link}) with comment: #{self.comment}"
+    end
+  end
+  
+  class Member < ApiItem
+    def to_s
+      "Member #{self.id}: #{self.name} (#{self.link}) with bio: #{self.bio}"
     end
   end
   
